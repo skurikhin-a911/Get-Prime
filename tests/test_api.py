@@ -633,46 +633,46 @@ class TestApiGet:
             assert json_response[
                        'message'] == "amount не может быть ниже значения: 10000", "Текст не соответствует"
 
-    # @pytest.mark.apitest
-    # @allure.title("Проверка https://dev-api.getprime.pro/api/v1/orders/create - amount below max")
-    # @allure.description("Негативная проверка поля amount, значение меньше минимальной планки ")
-    # def test_certificate_amount_below_max(self):
-    #     url_create_order = os.getenv("url_create_order")
-    #     headers = {
-    #         "Authorization": f"Bearer {access_token_frontend}",
-    #         "Content-Type": "application/json"
-    #     }
-    #
-    #     # Выбираем один случайный face_uuid
-    #
-    #     payload = {
-    #         "buyer": {
-    #             "name": "Иван Иванов",
-    #             "email": "ivanov@example.com",
-    #             "phone": "+79991112233"
-    #         },
-    #         "order_certificates": [
-    #             {
-    #                 "design_uuid": "542f8ec8-75d1-46ce-8a07-6dfbbebc8581",
-    #                 "amount": "10000001",
-    #                 "is_gift": 'true',
-    #                 "send_now": 'true',
-    #                 "timezone_code": "{{timezone_code}}",
-    #                 "sender": "Иванов Иван Иванович",
-    #                 "message": "С днём рождения!",
-    #                 "recipient_name": "Алексей",
-    #                 "recipient_phone": "+79992223344",
-    #                 "recipient_email": "ivanov@example.com",
-    #                 "count": 1
-    #             }
-    #         ]
-    #     }
-    #     with allure.step(f"Проверка {url_create_order} на код 400"):
-    #         response = requests.post(url_create_order, json=payload, headers=headers)
-    #         assert response.status_code == 400, "Статус код не 400"
-    #         json_response = response.json()
-    #     with allure.step(
-    #             f"Проверка текста message. Ожидали текст 'amount не может превышать значение: 10000000',\
-    #                              Получили текст '{json_response['message']}'"):
-    #         assert json_response[
-    #                    'message'] == "amount не может превышать значение: 10000000", "Текст не соответствует"
+    @pytest.mark.apitest
+    @allure.title("Проверка https://dev-api.getprime.pro/api/v1/orders/create - amount below max")
+    @allure.description("Негативная проверка поля amount, значение меньше минимальной планки ")
+    def test_certificate_amount_below_max(self):
+        url_create_order = os.getenv("url_create_order")
+        headers = {
+            "Authorization": f"Bearer {access_token_frontend}",
+            "Content-Type": "application/json"
+        }
+
+        # Выбираем один случайный face_uuid
+
+        payload = {
+            "buyer": {
+                "name": "Иван Иванов",
+                "email": "ivanov@example.com",
+                "phone": "+79991112233"
+            },
+            "order_certificates": [
+                {
+                    "design_uuid": "542f8ec8-75d1-46ce-8a07-6dfbbebc8581",
+                    "amount": "10000001",
+                    "is_gift": 'true',
+                    "send_now": 'true',
+                    "timezone_code": "{{timezone_code}}",
+                    "sender": "Иванов Иван Иванович",
+                    "message": "С днём рождения!",
+                    "recipient_name": "Алексей",
+                    "recipient_phone": "+79992223344",
+                    "recipient_email": "ivanov@example.com",
+                    "count": 1
+                }
+            ]
+        }
+        with allure.step(f"Проверка {url_create_order} на код 400"):
+            response = requests.post(url_create_order, json=payload, headers=headers)
+            assert response.status_code == 400, "Статус код не 400"
+            json_response = response.json()
+        with allure.step(
+                f"Проверка текста message. Ожидали текст 'amount не может превышать значение: 10000000',\
+                                 Получили текст '{json_response['message']}'"):
+            assert json_response[
+                       'message'] == "amount не может превышать значение: 10000000", "Текст не соответствует"
