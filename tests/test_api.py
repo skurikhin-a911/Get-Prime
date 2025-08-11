@@ -676,3 +676,4 @@ class TestApiGet:
                                  Получили текст '{json_response['message']}'"):
             assert json_response[
                        'message'] == "amount не может превышать значение: 10000000", "Текст не соответствует"
+            фафафаффафафафафц
