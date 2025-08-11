@@ -1,0 +1,8 @@
+🔍 Проверяется URL: https://cdn.getprime.pro/prod/merchants/moveli-5d6c1bee/logo/logo_2.png
+🔍 Проверяется URL: https://cdn.getprime.pro/prod/merchants/moveli-5d6c1bee/designs/20.jpg
+🔍 Проверяется URL: https://cdn.getprime.pro/prod/merchants/moveli-5d6c1bee/designs/10.jpg
+🔍 Проверяется URL: https://cdn.getprime.pro/prod/merchants/moveli-5d6c1bee/designs/30.jpg
+🔍 Проверяется URL: https://cdn.getprime.pro/prod/merchants/moveli-5d6c1bee/designs/40.jpg
+🔍 Проверяется URL: https://cdn.getprime.pro/prod/merchants/moveli-5d6c1bee/designs/50.jpg
+✅ Все URL вернули 200 OK
+✅ Успешно: 6 / 6
