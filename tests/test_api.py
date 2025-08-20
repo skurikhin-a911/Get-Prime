@@ -159,9 +159,9 @@ class TestApiGet:
     @allure.description("Негативная проверка catalog с ролью merchant")
     def test_certificate_catalog_merchant(self):
         url_certificates_catalog = os.getenv("url_certificates_catalog")
-        with allure.step(f"Проверка {url_certificates_catalog} на 403"):
+        with allure.step(f"Проверка {url_certificates_catalog} на 401"):
             assert requests.get(url=url_certificates_catalog, headers={
-                "Authorization": f"Bearer {access_token_merchant}"}).status_code == 403, "Статус код не 403"
+                "Authorization": f"Bearer {access_token_merchant}"}).status_code == 401, "Статус код не 401"
             response = requests.get(url=url_certificates_catalog,
                                     headers={"Authorization": f"Bearer {access_token_merchant}"}).json()
         with allure.step(
@@ -205,9 +205,9 @@ class TestApiGet:
     @allure.description("Негативная проверка catalog с ролью tg_service")
     def test_certificate_catalog_tg_service(self):
         url_certificates_catalog = os.getenv("url_certificates_catalog")
-        with allure.step(f"Проверка {url_certificates_catalog} на 403"):
+        with allure.step(f"Проверка {url_certificates_catalog} на 401"):
             assert requests.get(url=url_certificates_catalog, headers={
-                "Authorization": f"Bearer {access_token_tg}"}).status_code == 403, "Статус кода не 403"
+                "Authorization": f"Bearer {access_token_tg}"}).status_code == 401, "Статус кода не 401"
             response = requests.get(url=url_certificates_catalog,
                                     headers={"Authorization": f"Bearer {access_token_tg}"}).json()
         with allure.step(
@@ -265,9 +265,9 @@ class TestApiGet:
         "Негативная проверка catalog без ключа авторизации в хедере")
     def test_certificate_catalog_no_token(self):
         url_certificates_catalog = os.getenv("url_certificates_catalog")
-        with allure.step(f"Проверка {url_certificates_catalog} на 403 "):
+        with allure.step(f"Проверка {url_certificates_catalog} на 401 "):
             response = requests.get(url=url_certificates_catalog)
-            assert response.status_code == 403, "статус код не 403"
+            assert response.status_code == 401, "статус код не 401"
             json_response = response.json()
         with allure.step(
                 f"Проверка текста message. Ожидали текст 'У вас нет прав для выполнения этого действия.',\
@@ -279,9 +279,9 @@ class TestApiGet:
     @allure.description("Негативная проверка catalog с невалидным ключом авторизации в хедере")
     def test_certificate_catalog_invalid_token(self):
         url_certificates_catalog = os.getenv("url_certificates_catalog")
-        with allure.step(f"Проверка {url_certificates_catalog} на 403"):
+        with allure.step(f"Проверка {url_certificates_catalog} на 401"):
             response = requests.get(url=url_certificates_catalog, headers={"Authorization": "invalid_token"})
-            assert response.status_code == 403, "Статус код не 403"
+            assert response.status_code == 401, "Статус код не 401"
             json_response = response.json()
         with allure.step(
                 f"Проверка текста message. Ожидали текст 'У вас нет прав для выполнения этого действия.',\
@@ -581,13 +581,13 @@ class TestApiGet:
                 }
             ]
         }
-        # with allure.step(f"Проверка {url_create_order} на код 200"):     на сервере 500
-        #     response = requests.post(url_create_order, json=payload, headers=headers)
-        #     assert response.status_code == 200, "Статус код не 200"
-        #     resp_json = response.json()
-        # with allure.step("Проверка на наличия домена 'dev-get.alfa-payment.ru' в поле 'paymtnt_url'"):
-        #     assert "dev-get.alfa-payment.ru" in resp_json[
-        #         "payment_url"], "payment_url не содержит dev-get.alfa-payment.ru"
+        with allure.step(f"Проверка {url_create_order} на код 200"):
+            response = requests.post(url_create_order, json=payload, headers=headers)
+            assert response.status_code == 200, "Статус код не 200"
+            resp_json = response.json()
+        with allure.step("Проверка на наличия домена 'dev-get.alfa-payment.ru' в поле 'paymtnt_url'"):
+            assert "dev-get.alfa-payment.ru" in resp_json[
+                "payment_url"], "payment_url не содержит dev-get.alfa-payment.ru"
 
     @pytest.mark.apitest
     @allure.title("Проверка https://dev-api.getprime.pro/api/v1/orders/create - amount below min")
@@ -598,8 +598,6 @@ class TestApiGet:
             "Authorization": f"Bearer {access_token_frontend}",
             "Content-Type": "application/json"
         }
-
-        # Выбираем один случайный face_uuid
 
         payload = {
             "buyer": {
@@ -613,7 +611,7 @@ class TestApiGet:
                     "amount": "99",
                     "is_gift": 'true',
                     "send_now": 'true',
-                    "timezone_code": "{{timezone_code}}",
+                    "timezone_code": "MSK",
                     "sender": "Иванов Иван Иванович",
                     "message": "С днём рождения!",
                     "recipient_name": "Алексей",
@@ -642,9 +640,6 @@ class TestApiGet:
             "Authorization": f"Bearer {access_token_frontend}",
             "Content-Type": "application/json"
         }
-
-        # Выбираем один случайный face_uuid
-
         payload = {
             "buyer": {
                 "name": "Иван Иванов",
@@ -657,7 +652,7 @@ class TestApiGet:
                     "amount": "10000001",
                     "is_gift": 'true',
                     "send_now": 'true',
-                    "timezone_code": "{{timezone_code}}",
+                    "timezone_code": "MSK",
                     "sender": "Иванов Иван Иванович",
                     "message": "С днём рождения!",
                     "recipient_name": "Алексей",
@@ -676,4 +671,42 @@ class TestApiGet:
                                  Получили текст '{json_response['message']}'"):
             assert json_response[
                        'message'] == "amount не может превышать значение: 10000000", "Текст не соответствует"
-            фафафаффафафа
+
+    @pytest.mark.apitest
+    @allure.title("Проверка https://dev-api.getprime.pro/api/v1/orders/create - missing email")
+    @allure.description("Негативная проверка, в body нет поля email")
+    def test_certificate_missing_email(self):
+        url_create_order = os.getenv("url_create_order")
+        headers = {
+            "Authorization": f"Bearer {access_token_frontend}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "buyer": {
+                "name": "Иван Иванов",
+                "email": "ivanov@example.com",
+                "phone": "+79991112233"
+            },
+            "order_certificates": [
+                {
+                    "design_uuid": "542f8ec8-75d1-46ce-8a07-6dfbbebc8581",
+                    "amount": 1000000,
+                    "is_gift": "true",
+                    "send_now": "true",
+                    "timezone_code": "MSK",
+                    "sender": "Иванов Иван Иванович",
+                    "message": "С днём рождения!",
+                    "recipient_name": "Алексей",
+                    "recipient_phone": "+79992223344",
+                    "recipient_email": "ivanov@example.com",
+                    "count": 1
+                }
+            ]
+        }
+        with allure.step(f"Проверка {url_create_order} на 400"):
+            response = requests.post(url=url_create_order, json=payload, headers=headers)
+            assert response.status_code == 400, "статус код не 400"
+            json_response = response.json()
+        with allure.step(f"Проверка текста message. Ожидали текст 'Указан некорректный адрес электронной почты.',\
+                                 Получили текст '{json_response['message']}'"):
+            assert json_response['message'] == "Указан некорректный адрес электронной почты.", "Текст не соответствует"
